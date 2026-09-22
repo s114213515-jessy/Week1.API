@@ -1,7 +1,9 @@
 from fastapi import FastAPI
 from pydantic import BaseModel
+from app.api.notes import router as notes_router
 
 app = FastAPI(title="My Backend API")
+app.include_router(notes_router)
 
 
 class Item(BaseModel):

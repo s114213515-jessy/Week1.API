@@ -1,8 +1,8 @@
-# Week1.API
+# Week2.API
 
 這是一個使用 FastAPI 建立的後端 API 練習專案。
 
-本專案是 FastAPI + PostgreSQL 後端課程的第一週成果。
+本專案是 FastAPI + PostgreSQL 後端課程的第二週成果。
 
 ## 使用技術
 
@@ -10,6 +10,8 @@
 - FastAPI
 - Uvicorn
 - Pydantic
+- PostgreSQL
+- Psycopg
 - Git
 - GitHub
 
@@ -19,7 +21,14 @@
 api/
 ├── app/
 │   ├── __init__.py
-│   └── main.py
+│   ├── main.py
+│   ├── api/
+│   │   └── notes.py
+│   └── core/
+│       ├── database.py
+│       └── db_test.py
+├── psql/
+│   └── createdb.sql
 ├── .env.example
 ├── .gitignore
 ├── README.md
@@ -67,7 +76,19 @@ python -m pip install -r requirements.txt
 uvicorn app.main:app --reload
 ```
 
-### 6. 開啟 API 文件
+### 6. 設定 PostgreSQL
+
+先複製 `.env.example` 為 `.env`，再依本機 PostgreSQL 的帳號、密碼和連接埠修改
+`DATABASE_URL`。接著用 `psql` 執行 `psql/createdb.sql`，建立開發資料庫、
+`dev_user` 和 `notes` table。
+
+確認 Python 可以連線：
+
+```powershell
+python -m app.core.db_test
+```
+
+### 7. 開啟 API 文件
 
 在瀏覽器開啟：
 
@@ -82,6 +103,7 @@ http://127.0.0.1:8000/docs
 | GET | `/health` | 檢查 API 是否正常 |
 | GET | `/version` | 查看 API 版本 |
 | POST | `/items` | 建立一個商品 |
+| GET | `/note/{id}` | 依 ID 取得筆記 |
 
 ## API 測試
 
@@ -132,6 +154,16 @@ http://127.0.0.1:8000/version
   "price": 1200.5
 }
 ```
+
+### GET /note/{id}
+
+例如：
+
+```text
+http://127.0.0.1:8000/note/1
+```
+
+找不到筆記時會回傳 HTTP 404。
 
 ## 環境變數
 
