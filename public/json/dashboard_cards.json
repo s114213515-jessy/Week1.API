@@ -1,0 +1,147 @@
+{
+  "dashboard": {
+    "label": "總覽",
+    "heading": "今日概況",
+    "description": "教務工作區的重點資訊",
+    "cards": [
+      {
+        "title": "開設課程",
+        "value": "24",
+        "trend": "本學期",
+        "description": "目前已建立的課程數量",
+        "icon": "▤",
+        "color": "#3457d5",
+        "tint": "#edf1ff"
+      },
+      {
+        "title": "修課學生",
+        "value": "486",
+        "trend": "在學中",
+        "description": "所有課程的修課人數統計",
+        "icon": "♙",
+        "color": "#087e8b",
+        "tint": "#e8f8f8"
+      },
+      {
+        "title": "待處理事項",
+        "value": "08",
+        "trend": "待確認",
+        "description": "需要教務人員後續處理的項目",
+        "icon": "◷",
+        "color": "#c46b12",
+        "tint": "#fff4e5"
+      },
+      {
+        "title": "本週公告",
+        "value": "03",
+        "trend": "已發布",
+        "description": "本週已發布的教務公告",
+        "icon": "▧",
+        "color": "#9b4db5",
+        "tint": "#f7edfb"
+      },
+      {
+        "title": "選課作業",
+        "value": "進行中",
+        "trend": "第二階段",
+        "description": "選課加退選作業目前狀態",
+        "icon": "✓",
+        "color": "#16804a",
+        "tint": "#eaf8ef"
+      },
+      {
+        "title": "資料更新",
+        "value": "09:30",
+        "trend": "今日",
+        "description": "教務資料最近一次更新時間",
+        "icon": "↻",
+        "color": "#526174",
+        "tint": "#f0f2f5"
+      }
+    ]
+  },
+  "courses": {
+    "label": "課程管理",
+    "heading": "課程管理",
+    "description": "本學期課程與教學進度摘要",
+    "cards": [
+      {
+        "title": "開設課程",
+        "value": "24",
+        "trend": "本學期",
+        "description": "目前已建立的課程數量",
+        "icon": "▤",
+        "color": "#3457d5",
+        "tint": "#edf1ff"
+      },
+      {
+        "title": "授課教師",
+        "value": "18",
+        "trend": "已排課",
+        "description": "本學期安排授課的教師人數",
+        "icon": "♙",
+        "color": "#087e8b",
+        "tint": "#e8f8f8"
+      },
+      {
+        "title": "待確認課程",
+        "value": "02",
+        "trend": "待處理",
+        "description": "仍需確認時段或教室的課程",
+        "icon": "◷",
+        "color": "#c46b12",
+        "tint": "#fff4e5"
+      }
+    ]
+  },
+  "students": {
+    "label": "學生資料",
+    "heading": "學生資料",
+    "description": "學生與修課資料摘要",
+    "cards": [
+      {
+        "title": "在學學生",
+        "value": "486",
+        "trend": "本學期",
+        "description": "目前具有在學狀態的學生",
+        "icon": "♙",
+        "color": "#087e8b",
+        "tint": "#e8f8f8"
+      },
+      {
+        "title": "本週新增",
+        "value": "12",
+        "trend": "學生資料",
+        "description": "本週新增或更新的學生資料",
+        "icon": "+",
+        "color": "#16804a",
+        "tint": "#eaf8ef"
+      }
+    ]
+  },
+  "announcements": {
+    "label": "公告管理",
+    "heading": "公告管理",
+    "description": "近期公告發布情況",
+    "cards": [
+      {
+        "title": "本週公告",
+        "value": "03",
+        "trend": "已發布",
+        "description": "本週已發布的教務公告",
+        "icon": "▧",
+        "color": "#9b4db5",
+        "tint": "#f7edfb"
+      },
+      {
+        "title": "草稿公告",
+        "value": "02",
+        "trend": "待發布",
+        "description": "已儲存但尚未發布的公告",
+        "icon": "✎",
+        "color": "#c46b12",
+        "tint": "#fff4e5"
+      }
+    ]
+  }
+}

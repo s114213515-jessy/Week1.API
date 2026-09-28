@@ -1,8 +1,8 @@
-# Week3.API
+# Web Programming Lab
 
 這是一個使用 FastAPI 建立的後端 API 練習專案。
 
-本專案是 FastAPI + PostgreSQL 後端課程的第三週成果，現在 FastAPI 同時提供網頁與 API。
+本專案結合 FastAPI 後端與 WKE 教務系統前端練習，支援本機及學號子路徑部署。
 
 ## 使用技術
 
@@ -13,6 +13,7 @@
 - PostgreSQL
 - Psycopg
 - HTML/CSS
+- JavaScript
 - Git
 - GitHub
 
@@ -30,7 +31,13 @@ api/
 │       └── db_test.py
 ├── public/
 │   ├── index.html
-│   └── styles.css
+│   ├── css/
+│   │   └── styles.css
+│   ├── js/
+│   │   └── app.js
+│   └── json/
+│       ├── teacher_ops.json
+│       └── dashboard_cards.json
 ├── psql/
 │   └── createdb.sql
 ├── run.bat
@@ -100,11 +107,18 @@ uvicorn app.main:app --host 0.0.0.0 --port 7777 --reload
 瀏覽器開啟：
 
 ```text
-http://127.0.0.1:7777/
+http://127.0.0.1:7777/s114213515/
 http://127.0.0.1:7777/docs
 ```
 
-API 路由統一使用 `/api/` 前綴。
+首頁以 `/s114213515/` 作為 `<base>`，支援老師 IIS URL Rewrite 的學號子路徑部署。
+FastAPI 也會將本機測試網址中的相同學號前綴映射回應用程式根路徑。
+
+API 路由統一使用 `/api/` 前綴。公開靜態資源限制為 HTML、CSS、SVG，以及 `js/` 和
+`json/` 目錄；其他檔案路徑會回傳 404。
+
+教務側欄由 `public/json/teacher_ops.json` 載入，儀表板卡片由
+`public/json/dashboard_cards.json` 載入。側欄項目可切換不同的模擬卡片內容。
 
 ### 7. 設定 PostgreSQL
 
