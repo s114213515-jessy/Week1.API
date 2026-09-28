@@ -1,5 +1,6 @@
 @echo off
 setlocal
+cd /d "%~dp0"
 
 set "HOST=%~1"
 if "%HOST%"=="" set "HOST=0.0.0.0"
