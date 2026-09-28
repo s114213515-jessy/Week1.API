@@ -3,85 +3,18 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="theme-color" content="#f4f6fb">
-    <base href="/s114213515/">
-    <title>WKE 教務系統</title>
-    <link rel="stylesheet" href="css/styles.css">
-    <script src="js/app.js" defer></script>
+    <title>FastAPI + PostgreSQL</title>
+    <link rel="stylesheet" href="/styles.css">
   </head>
   <body>
-    <div class="app-shell">
-      <aside class="sidebar" id="sidebar" aria-label="主要導覽">
-        <a class="brand" href="./" aria-label="WKE 教務系統首頁">
-          <span class="brand-mark" aria-hidden="true">W</span>
-          <span>WKE <small>教務系統</small></span>
-        </a>
-
-        <div class="sidebar-label">工作區</div>
-        <nav class="sidebar-nav" id="teacher-ops" aria-label="教務功能">
-          <p class="loading-message">正在載入功能選單…</p>
-        </nav>
-
-        <div class="sidebar-footer">
-          <span class="status-dot" aria-hidden="true"></span>
-          系統服務正常
-        </div>
-      </aside>
-
-      <button class="sidebar-backdrop" id="sidebar-backdrop" type="button" aria-label="關閉導覽選單"></button>
-
-      <main class="main-panel">
-        <header class="topbar">
-          <button
-            class="menu-button"
-            id="menu-button"
-            type="button"
-            aria-label="開啟導覽選單"
-            aria-controls="sidebar"
-            aria-expanded="false"
-          >
-            <span></span><span></span><span></span>
-          </button>
-          <div class="breadcrumb"><span>教務工作區</span><span aria-hidden="true">/</span><strong id="current-section">總覽</strong></div>
-          <button class="login-button" type="button">
-            <span class="avatar" aria-hidden="true">訪</span>
-            <span>登入</span>
-          </button>
-        </header>
-
-        <section class="page-content" aria-labelledby="page-title">
-          <div class="page-heading">
-            <div>
-              <p class="eyebrow">WKE ACADEMIC PORTAL</p>
-              <h1 id="page-title">教務儀表板</h1>
-              <p class="page-description">快速掌握教務資訊與近期工作。</p>
-            </div>
-            <div class="today-chip">
-              <span class="today-dot" aria-hidden="true"></span>
-              <span id="today-label">今日概覽</span>
-            </div>
-          </div>
-
-          <div class="notice-banner" role="status">
-            <span class="notice-icon" aria-hidden="true">i</span>
-            <p>歡迎使用 WKE 教務系統。請從左側選單選擇要查看的功能。</p>
-          </div>
-
-          <div class="section-heading">
-            <div>
-              <h2 id="cards-title">今日概況</h2>
-              <p id="cards-description">教務工作區的重點資訊</p>
-            </div>
-            <span class="updated-label">即時資訊</span>
-          </div>
-
-          <div class="dashboard-grid" id="dashboard-cards" aria-live="polite">
-            <p class="loading-message">正在載入儀表板…</p>
-          </div>
-
-          <footer class="page-footer">WKE 教務系統 <span>•</span> Web Programming 實作</footer>
-        </section>
-      </main>
-    </div>
+    <main class="card">
+      <p class="eyebrow">Week 3</p>
+      <h1>FastAPI Web App</h1>
+      <p>FastAPI 同時提供網頁與 API。</p>
+      <p class="links">
+        <a href="/docs">API 文件</a>
+        <a href="/api/health">Health Check</a>
+      </p>
+    </main>
   </body>
 </html>

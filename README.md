@@ -1,8 +1,8 @@
-# Web Programming Lab
+# Week 4: FastAPI + PostgreSQL
 
 這是一個使用 FastAPI 建立的後端 API 練習專案。
 
-本專案結合 FastAPI 後端與 WKE 教務系統前端練習，支援本機及學號子路徑部署。
+本專案以 FastAPI 和 PostgreSQL 實作 RESTful Notes API。
 
 ## 使用技術
 
@@ -13,7 +13,6 @@
 - PostgreSQL
 - Psycopg
 - HTML/CSS
-- JavaScript
 - Git
 - GitHub
 
@@ -26,18 +25,16 @@ api/
 │   ├── main.py
 │   ├── api/
 │   │   └── notes.py
-│   └── core/
-│       ├── database.py
-│       └── db_test.py
+│   ├── core/
+│   │   ├── database.py
+│   │   └── db_test.py
+│   ├── repositories/
+│   │   └── notes.py
+│   └── schemas/
+│       └── note.py
 ├── public/
 │   ├── index.html
-│   ├── css/
-│   │   └── styles.css
-│   ├── js/
-│   │   └── app.js
-│   └── json/
-│       ├── teacher_ops.json
-│       └── dashboard_cards.json
+│   └── styles.css
 ├── psql/
 │   └── createdb.sql
 ├── run.bat
@@ -107,18 +104,12 @@ uvicorn app.main:app --host 0.0.0.0 --port 7777 --reload
 瀏覽器開啟：
 
 ```text
-http://127.0.0.1:7777/s114213515/
+http://127.0.0.1:7777/
 http://127.0.0.1:7777/docs
 ```
 
-首頁以 `/s114213515/` 作為 `<base>`，支援老師 IIS URL Rewrite 的學號子路徑部署。
-FastAPI 也會將本機測試網址中的相同學號前綴映射回應用程式根路徑。
-
-API 路由統一使用 `/api/` 前綴。公開靜態資源限制為 HTML、CSS、SVG，以及 `js/` 和
-`json/` 目錄；其他檔案路徑會回傳 404。
-
-教務側欄由 `public/json/teacher_ops.json` 載入，儀表板卡片由
-`public/json/dashboard_cards.json` 載入。側欄項目可切換不同的模擬卡片內容。
+API 路由統一使用 `/api/` 前綴。網站僅提供 `index.html` 和 `styles.css`，其他靜態路徑
+會回傳 404。
 
 ### 7. 設定 PostgreSQL
 
@@ -139,7 +130,12 @@ python -m app.core.db_test
 | GET | `/api/health` | 檢查 API 是否正常 |
 | GET | `/api/version` | 查看 API 版本 |
 | POST | `/api/items` | 建立一個商品 |
-| GET | `/api/note/{id}` | 依 ID 取得筆記 |
+| POST | `/api/notes` | 建立筆記 |
+| GET | `/api/notes` | 列出所有筆記 |
+| GET | `/api/notes/{id}` | 取得單筆筆記 |
+| PUT | `/api/notes/{id}` | 完整更新筆記 |
+| DELETE | `/api/notes/{id}` | 刪除筆記 |
+| GET | `/api/note/{id}` | 舊版單筆查詢相容路徑 |
 
 ## API 測試
 
@@ -191,15 +187,32 @@ http://127.0.0.1:7777/api/version
 }
 ```
 
-### GET /note/{id}
+### Notes CRUD
 
-例如：
+建立筆記：
 
-```text
-http://127.0.0.1:7777/api/note/1
+```http
+POST /api/notes
+Content-Type: application/json
 ```
 
-找不到筆記時會回傳 HTTP 404。
+```json
+{
+  "title": "學習 REST",
+  "content": "理解 CRUD"
+}
+```
+
+建立成功回傳 HTTP 201 與新筆記。列表使用 `GET /api/notes`；查詢單筆使用
+`GET /api/notes/1`。完整更新使用 `PUT /api/notes/1`，並傳入包含 `title` 和
+`content` 的完整 JSON body。刪除使用 `DELETE /api/notes/1`，成功回傳 HTTP 204。
+查詢、更新或刪除不存在的筆記會回傳 HTTP 404。
+
+API 文件：
+
+```text
+http://127.0.0.1:7777/docs
+```
 
 ## 環境變數
 

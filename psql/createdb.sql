@@ -14,4 +14,5 @@ CREATE TABLE IF NOT EXISTS notes (
 
 GRANT SELECT ON TABLE notes TO dev_user;
 GRANT INSERT ON TABLE notes TO dev_user;
+GRANT UPDATE, DELETE ON TABLE notes TO dev_user;
 GRANT USAGE, SELECT ON SEQUENCE notes_id_seq TO dev_user;
