@@ -5,6 +5,7 @@ from fastapi.responses import FileResponse
 from pydantic import BaseModel
 
 from app.api.notes import router as notes_router
+from app.api.taxonomy import router as taxonomy_router
 
 PUBLIC_DIRECTORY = Path(__file__).resolve().parent.parent / "public"
 PUBLIC_FILES = {
@@ -14,6 +15,7 @@ PUBLIC_FILES = {
 
 app = FastAPI(title="My Backend API")
 app.include_router(notes_router, prefix="/api")
+app.include_router(taxonomy_router, prefix="/api")
 
 
 class Item(BaseModel):
