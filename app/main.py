@@ -11,6 +11,12 @@ PUBLIC_DIRECTORY = Path(__file__).resolve().parent.parent / "public"
 PUBLIC_FILES = {
     "index.html": "index.html",
     "styles.css": "styles.css",
+    "app.js": "app.js",
+    "w05.html": "w05.html",
+    "w05.css": "w05.css",
+    "w05.js": "w05.js",
+    "json/teacher_ops.json": "json/teacher_ops.json",
+    "json/dashboard_cards.json": "json/dashboard_cards.json",
 }
 
 app = FastAPI(title="My Backend API")

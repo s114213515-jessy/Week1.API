@@ -1,0 +1,58 @@
+{
+  "dashboard": [
+    {
+      "id": "today-courses",
+      "title": "今日課程",
+      "value": "4 堂",
+      "description": "查看今天的教學安排。",
+      "detail": "此為展示用範例資料，不代表實際課表。",
+      "icon": "▤"
+    },
+    {
+      "id": "pending-tasks",
+      "title": "待處理事項",
+      "value": "3 項",
+      "description": "掌握尚待完成的教務工作。",
+      "detail": "可以在後續版本加入待辦 API。",
+      "icon": "✓"
+    },
+    {
+      "id": "announcements",
+      "title": "最新公告",
+      "value": "2 則",
+      "description": "快速查看近期校務消息。",
+      "detail": "公告內容為虛構範例，不包含真實校務資訊。",
+      "icon": "▱"
+    }
+  ],
+  "courses": [
+    {
+      "id": "course-overview",
+      "title": "課程總覽",
+      "value": "本週 8 堂",
+      "description": "檢視本週課程安排。",
+      "detail": "課程管理功能目前尚未連接資料庫。",
+      "icon": "▤"
+    }
+  ],
+  "students": [
+    {
+      "id": "student-privacy",
+      "title": "學生資料保護",
+      "value": "安全優先",
+      "description": "此展示頁不載入任何學生個資。",
+      "detail": "真實學生資料應由受保護的 API 提供，並依權限控管。",
+      "icon": "♙"
+    }
+  ],
+  "announcements": [
+    {
+      "id": "announcement-example",
+      "title": "系統展示公告",
+      "value": "範例",
+      "description": "這是一則前端展示用公告。",
+      "detail": "後續可使用公告 API 取代此靜態資料。",
+      "icon": "▱"
+    }
+  ]
+}

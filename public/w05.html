@@ -1,0 +1,288 @@
+<!doctype html>
+<html lang="zh-Hant">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta
+      name="description"
+      content="W5 JavaScript DOM 與事件處理：用 Event、Function、DOM 理解互動並練習 AI Coding。"
+    >
+    <title>W5 JavaScript DOM 與事件處理</title>
+    <link rel="stylesheet" href="/styles.css">
+    <link rel="stylesheet" href="/w05.css">
+    <script src="/w05.js" defer></script>
+  </head>
+  <body>
+    <header class="lesson-topbar">
+      <a class="lesson-brand" href="/" aria-label="返回 WKE 教務系統首頁">
+        WKE <span>教務系統</span>
+      </a>
+      <a class="lesson-home-link" href="/">返回儀表板</a>
+    </header>
+
+    <div class="lesson-layout">
+      <nav class="lesson-toc" aria-label="W5 課程目錄">
+        <p class="lesson-toc-title">W5 課程目錄</p>
+        <a href="#goals">學習目標</a>
+        <a href="#code-map">先看程式地圖</a>
+        <a href="#mental-model">互動心智模型</a>
+        <a href="#practice">動手操作</a>
+        <a href="#prompt">寫出好 Prompt</a>
+        <a href="#dom-events">DOM 與 Event</a>
+        <a href="#debugging">Debugging 流程</a>
+        <a href="#exercises">練習與 Code Review</a>
+        <a href="#workflow">AI Coding 工作流程</a>
+        <a href="#next-week">銜接 W6</a>
+      </nav>
+
+      <main class="lesson-content">
+        <section class="lesson-hero" aria-labelledby="lessonTitle">
+          <p class="eyebrow">WEB PROGRAMMING · WEEK 05</p>
+          <h1 id="lessonTitle">JavaScript DOM 與事件處理</h1>
+          <p class="lesson-lead">
+            不必先背完 DOM 語法。先看懂使用者做了什麼、程式呼叫哪個功能，以及畫面如何改變。
+          </p>
+          <div class="lesson-hero-flow" aria-label="本週核心流程">
+            <span>Event</span><span aria-hidden="true">→</span>
+            <span>Function</span><span aria-hidden="true">→</span>
+            <span>DOM Change</span><span aria-hidden="true">→</span>
+            <span>UI Result</span>
+          </div>
+        </section>
+
+        <section class="lesson-section" id="goals" aria-labelledby="goalsTitle">
+          <p class="eyebrow">01 · LEARNING GOALS</p>
+          <h2 id="goalsTitle">完成本週後，你可以</h2>
+          <ul class="goal-list">
+            <li>用 top-down 的方式辨認 `app.js` 的資料載入、畫面 render、狀態更新與事件處理。</li>
+            <li>追蹤一條完整流程：Event → Function → DOM Change → UI Result。</li>
+            <li>用 Event、Function、DOM 與預期畫面描述需求，請 AI 協助完成局部修改。</li>
+            <li>檢查 AI 改了哪些檔案、事件監聽器、DOM 元素與狀態，並確認沒有破壞既有功能。</li>
+          </ul>
+        </section>
+
+        <section class="lesson-section" id="code-map" aria-labelledby="codeMapTitle">
+          <p class="eyebrow">02 · TOP-DOWN READING</p>
+          <h2 id="codeMapTitle">先看程式地圖，再看細節</h2>
+          <p>
+            不熟悉一支 `app.js` 時，不要急著逐行翻譯。先從 function 名稱和呼叫順序猜出責任，
+            再挑一條互動流程深入追蹤。
+          </p>
+          <div class="role-grid">
+            <article class="role-card">
+              <h3>資料與初始化</h3>
+              <p><code>readJson()</code>、<code>validatePageData()</code>、<code>loadPageData()</code></p>
+              <p>載入、檢查資料，然後啟動初始畫面。</p>
+            </article>
+            <article class="role-card">
+              <h3>Render / 建立畫面</h3>
+              <p><code>renderNavigation()</code>、<code>renderDashboard()</code>、<code>createDashboardCard()</code></p>
+              <p>把資料轉成 DOM 節點並放進頁面。</p>
+            </article>
+            <article class="role-card">
+              <h3>UI 狀態</h3>
+              <p><code>openSidebar()</code>、<code>closeSidebar()</code>、<code>toggleTheme()</code></p>
+              <p>讓側欄、主題或選取狀態切換。</p>
+            </article>
+            <article class="role-card">
+              <h3>Event / Handler</h3>
+              <p><code>addEventListener()</code>、<code>handleDocumentKeydown()</code></p>
+              <p>把使用者或瀏覽器事件連到對應功能。</p>
+            </article>
+          </div>
+          <div class="note-panel">
+            <strong>閱讀順序</strong>
+            <p>先看 function 名稱 → 找啟動點 → 追一條事件流程 → 最後才看語法細節。</p>
+          </div>
+        </section>
+
+        <section class="lesson-section" id="mental-model" aria-labelledby="mentalModelTitle">
+          <p class="eyebrow">03 · MENTAL MODEL</p>
+          <h2 id="mentalModelTitle">互動就是一條可追蹤的鏈</h2>
+          <div class="flow-card">
+            <div><span class="flow-label">使用者操作</span><strong>按下 Menu</strong></div>
+            <span class="flow-arrow" aria-hidden="true">→</span>
+            <div><span class="flow-label">Browser Event</span><strong><code>click</code></strong></div>
+            <span class="flow-arrow" aria-hidden="true">→</span>
+            <div><span class="flow-label">Function</span><strong><code>openSidebar()</code></strong></div>
+            <span class="flow-arrow" aria-hidden="true">→</span>
+            <div><span class="flow-label">DOM Change</span><strong>加入 class / 更新 attribute</strong></div>
+          </div>
+          <pre><code>menuToggle.addEventListener("click", openSidebar);</code></pre>
+          <pre><code>function openSidebar() {
+  sidebar.classList.add("is-open");
+  menuToggle.setAttribute("aria-expanded", "true");
+}</code></pre>
+          <p class="lesson-caption">
+            看見 event listener 時，問自己：「哪個元素發生什麼事件？事件會呼叫哪個 function？」
+            再進入 function 找出被修改的 DOM。
+          </p>
+        </section>
+
+        <section class="lesson-section" id="practice" aria-labelledby="practiceTitle">
+          <p class="eyebrow">04 · TRY IT</p>
+          <h2 id="practiceTitle">動手追蹤 Event → Function → DOM</h2>
+          <p>操作下面的示範，再觀察按鈕狀態、文字和畫面 class 如何改變。</p>
+          <div class="practice-panel">
+            <div class="practice-controls">
+              <button class="practice-button" id="demoMenuToggle" type="button" aria-expanded="false" aria-controls="demoSidebar">
+                開啟模擬選單
+              </button>
+              <button class="practice-button practice-button-secondary" id="demoMessageButton" type="button">
+                更新提示文字
+              </button>
+            </div>
+            <aside class="demo-sidebar" id="demoSidebar" hidden>
+              <div class="demo-sidebar-heading">
+                <strong>模擬側邊欄</strong>
+                <button class="demo-close" id="demoCloseButton" type="button" aria-label="關閉模擬側邊欄">×</button>
+              </div>
+              <p>按 Escape 或關閉按鈕，追蹤共用的關閉 function。</p>
+            </aside>
+            <p class="demo-message" id="demoMessage" aria-live="polite">提示：先操作，再說明發生了什麼。</p>
+            <p class="practice-status" id="practiceStatus" role="status" aria-live="polite">
+              等待操作。試試開啟選單，接著按 Escape。
+            </p>
+          </div>
+          <div class="note-panel">
+            <strong>觀察問題</strong>
+            <ol>
+              <li>哪個 Event 被觸發？</li>
+              <li>Event listener 呼叫哪個 Function？</li>
+              <li>Function 修改了哪些 DOM 屬性或文字？</li>
+              <li>畫面結果是否符合預期？</li>
+            </ol>
+          </div>
+        </section>
+
+        <section class="lesson-section" id="prompt" aria-labelledby="promptTitle">
+          <p class="eyebrow">05 · PROMPT DESIGN</p>
+          <h2 id="promptTitle">把互動需求說清楚，再請 AI 寫程式</h2>
+          <p>只說「幫我加 ESC 關閉」資訊不足。提供流程和修改限制，AI 才容易做出小而可檢查的改動。</p>
+          <pre class="prompt-block"><code>目前已有 openSidebar() 和 closeSidebar()。
+
+需求：
+Event：使用者按下 Escape。
+Function：沿用 closeSidebar()。
+DOM Change：沿用 closeSidebar() 既有操作，不重複寫 DOM 修改。
+Expected UI：側邊欄關閉，按鈕的 aria-expanded 回到 false。
+
+限制：
+1. 只修改必要的 JavaScript。
+2. 不要重寫整份 app.js。
+3. 不要改變其他側邊欄操作。
+4. 完成後列出 Event → Function → DOM → UI Result。</code></pre>
+          <div class="note-panel">
+            <strong>修改既有功能時</strong>
+            <p>先描述目前行為，再說明想保留什麼、要改什麼，以及哪些程式碼不可動。</p>
+          </div>
+        </section>
+
+        <section class="lesson-section" id="dom-events" aria-labelledby="domEventsTitle">
+          <p class="eyebrow">06 · DOM &amp; EVENTS</p>
+          <h2 id="domEventsTitle">本週先認識常用的 DOM 變更</h2>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th>目的</th><th>常見寫法</th><th>需求描述方式</th></tr></thead>
+              <tbody>
+                <tr><td>更新文字</td><td><code>element.textContent = "完成";</code></td><td>把提示區文字改成完成。</td></tr>
+                <tr><td>切換樣式</td><td><code>element.classList.toggle("active");</code></td><td>按一下切換 active class。</td></tr>
+                <tr><td>更新狀態</td><td><code>element.setAttribute("aria-expanded", "true");</code></td><td>展開時同步更新無障礙狀態。</td></tr>
+                <tr><td>隱藏或顯示</td><td><code>element.hidden = true;</code></td><td>收合時隱藏說明區。</td></tr>
+                <tr><td>新增節點</td><td><code>list.append(item);</code></td><td>按 Add 時新增一個清單項目。</td></tr>
+                <tr><td>重新 render</td><td><code>container.replaceChildren();</code></td><td>重畫之前先清除舊卡片。</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <p>常見 Event：<code>click</code>、<code>input</code>、<code>change</code>、<code>submit</code>、<code>keydown</code>。</p>
+        </section>
+
+        <section class="lesson-section" id="debugging" aria-labelledby="debuggingTitle">
+          <p class="eyebrow">07 · DEBUGGING</p>
+          <h2 id="debuggingTitle">互動沒反應時，依序檢查四層</h2>
+          <ol class="debug-list">
+            <li><strong>Element：</strong>程式有沒有取得正確的 DOM 元素？</li>
+            <li><strong>Event：</strong>listener 有沒有綁定？事件真的有發生嗎？</li>
+            <li><strong>Function：</strong>handler 有沒有執行？需要時用 console 訊息追蹤。</li>
+            <li><strong>DOM / CSS：</strong>DOM 值有沒有改？CSS 有沒有定義對應狀態？</li>
+          </ol>
+          <pre><code>預期：#menuToggle click → openSidebar() → #sidebar 加上 is-open
+
+若無效，檢查：
+1. #menuToggle 和 #sidebar 是否存在
+2. click listener 是否綁在正確元素
+3. openSidebar() 是否執行
+4. is-open 是否加到 sidebar
+5. CSS 是否有對應 .is-open 樣式</code></pre>
+        </section>
+
+        <section class="lesson-section" id="exercises" aria-labelledby="exercisesTitle">
+          <p class="eyebrow">08 · PRACTICE &amp; REVIEW</p>
+          <h2 id="exercisesTitle">練習：先描述，再實作與驗收</h2>
+          <div class="exercise-list">
+            <details>
+              <summary>練習 1：按 Escape 關閉 Sidebar</summary>
+              <p>Event：document keydown；Function：沿用 <code>closeSidebar()</code>；驗收：側欄關閉且 Menu 按鈕狀態正確。</p>
+            </details>
+            <details>
+              <summary>練習 2：導覽項目預覽說明</summary>
+              <p>Event：mouseenter / focus；Function：<code>showNavigationPreview(item)</code>；DOM：更新預覽文字。</p>
+            </details>
+            <details>
+              <summary>練習 3：選取 Dashboard Card</summary>
+              <p>Event：卡片 click；Function：<code>setSelectedCard()</code>；DOM：同一時間只有一張卡有 selected 狀態。</p>
+            </details>
+            <details>
+              <summary>練習 4：更新提示文字</summary>
+              <p>Event：更新按鈕 click；Function：<code>changeMessage()</code>；DOM：更新提示區的 <code>textContent</code>。</p>
+            </details>
+            <details>
+              <summary>練習 5：展開或收合詳細面板</summary>
+              <p>Event：按鈕 click；DOM：切換 detail 的 <code>hidden</code>，並同步按鈕的 <code>aria-expanded</code>。</p>
+            </details>
+          </div>
+          <div class="review-panel">
+            <h3>每次 AI 修改後，回答這五題</h3>
+            <ol>
+              <li>Event 是什麼？</li>
+              <li>Listener 綁在哪個 DOM element？</li>
+              <li>觸發哪個 function？</li>
+              <li>Function 修改哪些 DOM、class 或 attribute？</li>
+              <li>這個修改會不會影響既有功能？</li>
+            </ol>
+          </div>
+        </section>
+
+        <section class="lesson-section" id="workflow" aria-labelledby="workflowTitle">
+          <p class="eyebrow">09 · AI CODING WORKFLOW</p>
+          <h2 id="workflowTitle">Describe → Ask AI → Inspect → Run → Verify → Refine → Commit</h2>
+          <ol class="workflow-list">
+            <li><strong>Describe：</strong>先列出 Event、Function、DOM 與預期畫面。</li>
+            <li><strong>Ask AI：</strong>提出清楚需求，指定要沿用的 function 與修改限制。</li>
+            <li><strong>Inspect：</strong>看 diff，確認改動範圍和 DOM 目標。</li>
+            <li><strong>Run：</strong>在瀏覽器實際操作，不只看程式碼。</li>
+            <li><strong>Verify：</strong>確認 Event、Function、DOM 與 UI 都符合預期，也測試原有行為。</li>
+            <li><strong>Refine：</strong>描述具體問題，要求 AI 做最小修正。</li>
+            <li><strong>Commit：</strong>用功能描述作為提交訊息，例如 <code>Add Escape key sidebar interaction</code>。</li>
+          </ol>
+          <div class="note-panel">
+            <strong>提交前檢查</strong>
+            <p>確認變更只包含本次功能，不要提交 `.env`、密碼或真實個人資料。</p>
+          </div>
+        </section>
+
+        <section class="lesson-section lesson-next-week" id="next-week" aria-labelledby="nextWeekTitle">
+          <p class="eyebrow">NEXT · WEEK 06</p>
+          <h2 id="nextWeekTitle">W6：把資料從 API 帶進畫面</h2>
+          <p>W5 先掌握互動鏈；下一週會加入資料請求，擴展成：</p>
+          <p class="next-week-flow"><code>Event → Function → fetch() → HTTP/API → JSON → DOM → UI</code></p>
+          <a class="lesson-home-link" href="/">返回儀表板，操作完整 W5 範例 →</a>
+        </section>
+      </main>
+    </div>
+
+    <footer class="lesson-footer">
+      W5 教材實作頁 · 展示互動不提供實際教務服務
+    </footer>
+  </body>
+</html>

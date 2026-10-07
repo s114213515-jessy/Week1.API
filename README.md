@@ -37,7 +37,11 @@ api/
 │       └── taxonomy.py
 ├── public/
 │   ├── index.html
-│   └── styles.css
+│   ├── styles.css
+│   ├── app.js
+│   └── json/
+│       ├── teacher_ops.json
+│       └── dashboard_cards.json
 ├── psql/
 │   ├── createdb.sql
 │   └── w05_relations.sql
@@ -85,22 +89,22 @@ python -m pip install -r requirements.txt
 
 ### 5. 啟動 FastAPI
 
-使用預設的本機測試設定（`0.0.0.0:7777`）：
+使用預設設定啟動：
 
 ```powershell
 .\run.bat
 ```
 
-也可以指定 host 與 port：
+如需讓課程網路上的 IIS 反向代理連入，才依老師指示指定 host 與 port：
 
 ```powershell
 .\run.bat 192.168.1.10 7777
 ```
 
-或直接啟動：
+本機直接測試時可使用 loopback 位址：
 
 ```powershell
-uvicorn app.main:app --host 0.0.0.0 --port 7777 --reload
+uvicorn app.main:app --host 127.0.0.1 --port 7777 --reload
 ```
 
 ### 6. 開啟 Web App 與 API 文件
@@ -112,8 +116,8 @@ http://127.0.0.1:7777/
 http://127.0.0.1:7777/docs
 ```
 
-API 路由統一使用 `/api/` 前綴。網站僅提供 `index.html` 和 `styles.css`，其他靜態路徑
-會回傳 404。
+API 路由統一使用 `/api/` 前綴。網站只提供靜態檔案白名單中的首頁、CSS、JavaScript
+和範例 JSON；其他靜態路徑會回傳 404。
 
 ### 7. 設定 PostgreSQL
 
@@ -164,6 +168,15 @@ categories 1 ─────< notes
 - 一篇筆記可以有多個標籤，一個標籤也可以標記多篇筆記。`note_tags` 是關聯表，以 `(note_id, tag_id)` 複合主鍵避免重複關聯。
 - 刪除分類時，所屬筆記保留但 `category_id` 變成 `NULL`；刪除筆記或標籤時，其 `note_tags` 關聯會由 foreign key cascade 清理。
 - 完整教學、migration 與驗收步驟見 [`W05_RELATIONAL_DESIGN.md`](W05_RELATIONAL_DESIGN.md)。
+- 本專案首頁也包含 Web Programming W5 的 DOM 互動範例，見下方「W5 Web：JavaScript DOM」。
+
+## W5 Web：JavaScript DOM 與事件
+
+首頁讀取 `public/json/teacher_ops.json` 與 `public/json/dashboard_cards.json`，示範側邊欄
+開關、Escape 關閉、導覽預覽、卡片選取、卡片說明展開、帳戶選單、深色模式與提示文字更新。
+在瀏覽器開啟 `http://127.0.0.1:7777/` 測試，並從首頁進入 `/w05.html` 閱讀 W5 教材與
+操作互動示範。Event → Function → DOM 對照、驗收步驟及 Code Review 檢查表見
+[`W05_WEB_DOM.md`](W05_WEB_DOM.md)。
 
 建立筆記時可同時設定分類與多個標籤：
 

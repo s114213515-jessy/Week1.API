@@ -3,18 +3,130 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>FastAPI + PostgreSQL</title>
-    <link rel="stylesheet" href="/styles.css">
+    <meta
+      name="description"
+      content="Web Programming 課程實作的教務儀表板範例。"
+    >
+    <title>WKE 教務系統</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="app.js" defer></script>
   </head>
   <body>
-    <main class="card">
-      <p class="eyebrow">Week 3</p>
-      <h1>FastAPI Web App</h1>
-      <p>FastAPI 同時提供網頁與 API。</p>
-      <p class="links">
-        <a href="/docs">API 文件</a>
-        <a href="/api/health">Health Check</a>
-      </p>
-    </main>
+    <div class="app-shell">
+      <header class="topbar">
+        <div class="brand-group">
+          <button
+            class="icon-button menu-toggle"
+            id="menuToggle"
+            type="button"
+            aria-label="開啟功能選單"
+            aria-controls="sidebar"
+            aria-expanded="false"
+          >
+            <span aria-hidden="true">☰</span>
+          </button>
+          <a class="brand" href="./" aria-label="WKE 教務系統首頁">
+            WKE <span>教務系統</span>
+          </a>
+        </div>
+        <div class="topbar-actions">
+          <button class="theme-toggle" id="themeToggle" type="button" aria-pressed="false">
+            深色模式
+          </button>
+          <div class="account-menu">
+            <button
+              class="account-toggle"
+              id="accountToggle"
+              type="button"
+              aria-expanded="false"
+              aria-controls="accountPanel"
+            >
+              教師帳戶
+              <span aria-hidden="true">⌄</span>
+            </button>
+            <div class="account-panel" id="accountPanel" hidden>
+              <p>課程展示帳戶</p>
+              <button id="accountAction" type="button">帳戶資訊</button>
+            </div>
+          </div>
+        </div>
+      </header>
+
+      <div class="workspace">
+        <aside class="sidebar" id="sidebar" aria-label="教師功能選單">
+          <div class="sidebar-heading">
+            <div>
+              <p class="eyebrow">WORKSPACE</p>
+              <h2>教師功能</h2>
+            </div>
+            <button
+              class="icon-button sidebar-close"
+              id="sidebarClose"
+              type="button"
+              aria-label="關閉功能選單"
+            >
+              <span aria-hidden="true">×</span>
+            </button>
+          </div>
+          <nav id="teacherNavigation" aria-label="主要功能"></nav>
+          <p class="navigation-preview" id="navigationPreview" aria-live="polite">
+            選擇功能以查看內容
+          </p>
+        </aside>
+
+        <button
+          class="sidebar-backdrop"
+          id="sidebarBackdrop"
+          type="button"
+          aria-label="關閉功能選單"
+          tabindex="-1"
+          hidden
+        ></button>
+
+        <main class="main-content">
+          <header class="page-heading">
+            <div>
+              <p class="eyebrow">TEACHER PORTAL</p>
+              <h1 id="pageTitle">儀表板</h1>
+              <p id="pageDescription">快速掌握課程與教務工作。</p>
+            </div>
+            <button class="primary-button" id="changeMessageButton" type="button">
+              更新提示
+            </button>
+          </header>
+
+          <section class="welcome-panel" aria-labelledby="welcomeTitle">
+            <div>
+              <p class="eyebrow">本週概況</p>
+              <h2 id="welcomeTitle">早安，教師</h2>
+              <p id="message">今天也一步一步完成重要工作。</p>
+              <a class="course-link" href="/w05.html">前往 W5 課程教材 <span aria-hidden="true">→</span></a>
+            </div>
+            <span class="welcome-mark" aria-hidden="true">W</span>
+          </section>
+
+          <section class="dashboard-section" aria-labelledby="summaryTitle">
+            <div class="section-heading">
+              <div>
+                <p class="eyebrow">OVERVIEW</p>
+                <h2 id="summaryTitle">工作摘要</h2>
+              </div>
+              <p class="muted">選取卡片查看詳細說明</p>
+            </div>
+            <div
+              class="dashboard-grid"
+              id="dashboardCards"
+              aria-live="polite"
+              aria-busy="true"
+            ></div>
+            <p class="status-message" id="statusMessage" role="status"></p>
+          </section>
+        </main>
+      </div>
+
+      <footer class="footer">
+        <small>Web Programming 課程實作 · 範例畫面，不提供實際教務服務</small>
+      </footer>
+    </div>
   </body>
 </html>

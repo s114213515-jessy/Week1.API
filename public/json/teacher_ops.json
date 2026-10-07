@@ -1,0 +1,28 @@
+{
+  "items": [
+    {
+      "id": "dashboard",
+      "label": "儀表板",
+      "icon": "▦",
+      "description": "查看今日教務摘要與待處理事項。"
+    },
+    {
+      "id": "courses",
+      "label": "課程管理",
+      "icon": "▤",
+      "description": "查看課程、班級與教學進度。"
+    },
+    {
+      "id": "students",
+      "label": "學生資料",
+      "icon": "♙",
+      "description": "此為介面展示，尚未載入學生個人資料。"
+    },
+    {
+      "id": "announcements",
+      "label": "公告",
+      "icon": "▱",
+      "description": "查看需要留意的校務通知。"
+    }
+  ]
+}
