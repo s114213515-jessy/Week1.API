@@ -24,18 +24,22 @@ api/
 │   ├── __init__.py
 │   ├── main.py
 │   ├── api/
+│   │   ├── auth.py
 │   │   ├── classes.py
 │   │   ├── notes.py
 │   │   └── taxonomy.py
 │   ├── core/
 │   │   ├── database.py
-│   │   └── db_test.py
+│   │   ├── db_test.py
+│   │   └── security.py
 │   ├── repositories/
 │   │   ├── classes.py
+│   │   ├── members.py
 │   │   ├── notes.py
 │   │   └── taxonomy.py
 │   └── schemas/
 │       ├── classes.py
+│       ├── member.py
 │       ├── note.py
 │       └── taxonomy.py
 ├── public/
@@ -48,6 +52,7 @@ api/
 ├── psql/
 │   ├── createdb.sql
 │   ├── academic.sql
+│   ├── w06_auth.sql
 │   └── w05_relations.sql
 ├── run.bat
 ├── .env.example
@@ -132,6 +137,7 @@ API 路由統一使用 `/api/` 前綴。網站只提供靜態檔案白名單中�
 ```powershell
 psql -h localhost -U postgres -d fastapi_dev -f psql/w05_relations.sql
 psql -h localhost -U postgres -d postgres -f psql/academic.sql
+psql -h localhost -U postgres -d fastapi_dev -f psql/w06_auth.sql
 ```
 
 此 migration 可重複執行；它會建立 `categories`、`tags`、`note_tags`，並為既有 `notes`
@@ -163,7 +169,16 @@ python -m app.core.db_test
 | POST | `/api/tags` | 建立標籤 |
 | POST | `/api/classes` | 透過 PostgreSQL function 建立或連結子分類 |
 | GET | `/api/subclass/pcid/{parent_id}` | 透過 `vd_subclass` view 查詢子分類 |
+| GET | `/api/auth/google/login` | 開始 Google OIDC 登入 |
+| GET | `/api/auth/google/callback` | 完成登入並簽發 HttpOnly JWT cookie |
+| GET | `/api/auth/me` | 取得目前登入的會員資料 |
+| POST | `/api/auth/logout` | 清除登入 cookie |
 | GET | `/api/note/{id}` | 舊版單筆查詢相容路徑 |
+
+W6 Google OIDC、JWT、會員資料表和安全設定步驟見 [`OAUTH.md`](OAUTH.md)。執行
+`psql/w06_auth.sql` 後，將 `.env.example` 複製為 `.env` 並填入自己的 Google OAuth
+憑證與兩組不同的隨機 secret。Google 登入需要在 Google Cloud Console 設定精確一致的
+redirect URI；不要將真實憑證提交到 GitHub。Notes 與 class/subclass API 需要有效登入。
 
 ## W5：關聯式設計
 

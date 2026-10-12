@@ -41,12 +41,18 @@
               aria-expanded="false"
               aria-controls="accountPanel"
             >
-              教師帳戶
+              <span id="accountLabel">登入</span>
               <span aria-hidden="true">⌄</span>
             </button>
             <div class="account-panel" id="accountPanel" hidden>
-              <p>課程展示帳戶</p>
-              <button id="accountAction" type="button">帳戶資訊</button>
+              <a class="account-action" id="accountLogin" href="api/auth/google/login">
+                使用 Google 登入
+              </a>
+              <div id="accountProfile" hidden>
+                <p id="accountName"></p>
+                <p id="accountEmail"></p>
+                <button id="accountLogout" type="button">登出</button>
+              </div>
             </div>
           </div>
         </div>

@@ -45,3 +45,18 @@
 - 我如何用鍵盤操作側邊欄或卡片：
 - 我用瀏覽器開發者工具驗證了什麼：
 - 我遇到的問題與解決方式：
+
+## W6 — Google OIDC 與 App JWT
+
+### 本週完成
+- 以 Google OIDC 驗證帳號，第一次登入新增會員，再次登入更新 profile。
+- 使用本系統簽發的短效 JWT，透過 HttpOnly cookie 或 Bearer token 傳送。
+- 以會員資料庫狀態保護 Notes 與 class/subclass API。
+- 前端可登入、顯示 profile，並呼叫登出 API 清除 cookie。
+
+### 我自己的心得
+- Authentication 和 Authorization 的差異：
+- Google OIDC identity 與本系統 JWT 各自負責什麼：
+- HttpOnly cookie 相較 localStorage 的安全性與限制：
+- 我如何確認未登入、過期 token、停用帳號都無法呼叫受保護 API：
+- 我遇到的問題與解決方式：

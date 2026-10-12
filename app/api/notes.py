@@ -3,6 +3,7 @@ from typing import Annotated
 from fastapi import APIRouter, Depends, HTTPException, Query, Response, status
 import psycopg
 
+from app.api.auth import get_current_member
 from app.core.database import connection_dependency
 from app.repositories.notes import (
     RelatedRecordNotFound,
@@ -14,7 +15,7 @@ from app.repositories.notes import (
 )
 from app.schemas.note import NoteCreate, NoteResponse
 
-router = APIRouter(tags=["notes"])
+router = APIRouter(tags=["notes"], dependencies=[Depends(get_current_member)])
 DatabaseConnection = Annotated[psycopg.Connection, Depends(connection_dependency)]
 
 

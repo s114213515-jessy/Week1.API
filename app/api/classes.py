@@ -3,11 +3,15 @@ from typing import Annotated
 from fastapi import APIRouter, Depends, HTTPException, Path, status
 import psycopg
 
+from app.api.auth import get_current_member
 from app.core.database import connection_dependency
 from app.repositories.classes import create_class_record, list_subclass_records
 from app.schemas.classes import ClassCreate, ClassResponse, SubclassResponse
 
-router = APIRouter(tags=["academic classes"])
+router = APIRouter(
+    tags=["academic classes"],
+    dependencies=[Depends(get_current_member)],
+)
 DatabaseConnection = Annotated[psycopg.Connection, Depends(connection_dependency)]
 
 

@@ -10,6 +10,12 @@ const sidebarClose = document.querySelector("#sidebarClose");
 const sidebarBackdrop = document.querySelector("#sidebarBackdrop");
 const accountToggle = document.querySelector("#accountToggle");
 const accountPanel = document.querySelector("#accountPanel");
+const accountLabel = document.querySelector("#accountLabel");
+const accountLogin = document.querySelector("#accountLogin");
+const accountProfile = document.querySelector("#accountProfile");
+const accountName = document.querySelector("#accountName");
+const accountEmail = document.querySelector("#accountEmail");
+const accountLogout = document.querySelector("#accountLogout");
 const themeToggle = document.querySelector("#themeToggle");
 const changeMessageButton = document.querySelector("#changeMessageButton");
 const message = document.querySelector("#message");
@@ -238,6 +244,52 @@ function handleDocumentClick(event) {
   }
 }
 
+function apiUrl(path) {
+  return new URL(`api/${path}`, document.baseURI);
+}
+
+async function loadSignedInProfile() {
+  try {
+    const response = await fetch(apiUrl("auth/me"), {
+      credentials: "same-origin",
+    });
+    if (response.status === 401) {
+      return;
+    }
+    if (!response.ok) {
+      throw new Error(`讀取登入者資料失敗：HTTP ${response.status}`);
+    }
+
+    const profile = await response.json();
+    accountLabel.textContent = profile.name || profile.email;
+    accountName.textContent = profile.name || "Google 使用者";
+    accountEmail.textContent = profile.email;
+    accountLogin.hidden = true;
+    accountProfile.hidden = false;
+  } catch (error) {
+    console.error("無法確認登入狀態：", error);
+    statusMessage.textContent = "無法確認登入狀態，請檢查網路連線或稍後重試。";
+  }
+}
+
+async function logout() {
+  accountLogout.disabled = true;
+  try {
+    const response = await fetch(apiUrl("auth/logout"), {
+      method: "POST",
+      credentials: "same-origin",
+    });
+    if (!response.ok) {
+      throw new Error(`登出失敗：HTTP ${response.status}`);
+    }
+    window.location.reload();
+  } catch (error) {
+    accountLogout.disabled = false;
+    console.error("無法登出：", error);
+    statusMessage.textContent = "登出失敗，請稍後再試。";
+  }
+}
+
 async function loadPageData() {
   try {
     const [operationsData, cardsData] = await Promise.all([
@@ -262,13 +314,11 @@ menuToggle.addEventListener("click", openSidebar);
 sidebarClose.addEventListener("click", closeSidebar);
 sidebarBackdrop.addEventListener("click", closeSidebar);
 accountToggle.addEventListener("click", toggleAccountPanel);
-document.querySelector("#accountAction").addEventListener("click", () => {
-  closeAccountPanel();
-  statusMessage.textContent = "帳戶資訊為展示功能，尚未連接登入服務。";
-});
+accountLogout.addEventListener("click", logout);
 themeToggle.addEventListener("click", toggleTheme);
 changeMessageButton.addEventListener("click", changeMessage);
 document.addEventListener("keydown", handleDocumentKeydown);
 document.addEventListener("click", handleDocumentClick);
 
 loadPageData();
+loadSignedInProfile();

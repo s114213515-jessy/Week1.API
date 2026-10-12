@@ -1,9 +1,15 @@
 from pathlib import Path
+import os
 
 from fastapi import FastAPI, HTTPException
 from fastapi.responses import FileResponse
 from pydantic import BaseModel
+from dotenv import load_dotenv
+from starlette.middleware.sessions import SessionMiddleware
 
+load_dotenv()
+
+from app.api.auth import router as auth_router
 from app.api.classes import router as classes_router
 from app.api.notes import router as notes_router
 from app.api.taxonomy import router as taxonomy_router
@@ -21,6 +27,21 @@ PUBLIC_FILES = {
 }
 
 app = FastAPI(title="My Backend API")
+session_secret = os.getenv("SESSION_SECRET_KEY")
+if session_secret:
+    if len(session_secret.encode("utf-8")) < 32:
+        raise RuntimeError("SESSION_SECRET_KEY must contain at least 32 bytes")
+    secure_setting = os.getenv("AUTH_COOKIE_SECURE", "true").lower()
+    if secure_setting not in {"true", "false"}:
+        raise RuntimeError("AUTH_COOKIE_SECURE must be true or false")
+    app.add_middleware(
+        SessionMiddleware,
+        secret_key=session_secret,
+        same_site="lax",
+        https_only=secure_setting == "true",
+    )
+
+app.include_router(auth_router, prefix="/api")
 app.include_router(notes_router, prefix="/api")
 app.include_router(taxonomy_router, prefix="/api")
 app.include_router(classes_router, prefix="/api")
