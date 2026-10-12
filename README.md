@@ -24,15 +24,18 @@ api/
 │   ├── __init__.py
 │   ├── main.py
 │   ├── api/
+│   │   ├── classes.py
 │   │   ├── notes.py
 │   │   └── taxonomy.py
 │   ├── core/
 │   │   ├── database.py
 │   │   └── db_test.py
 │   ├── repositories/
+│   │   ├── classes.py
 │   │   ├── notes.py
 │   │   └── taxonomy.py
 │   └── schemas/
+│       ├── classes.py
 │       ├── note.py
 │       └── taxonomy.py
 ├── public/
@@ -44,6 +47,7 @@ api/
 │       └── dashboard_cards.json
 ├── psql/
 │   ├── createdb.sql
+│   ├── academic.sql
 │   └── w05_relations.sql
 ├── run.bat
 ├── .env.example
@@ -123,14 +127,17 @@ API 路由統一使用 `/api/` 前綴。網站只提供靜態檔案白名單中�
 
 先複製 `.env.example` 為 `.env`，再依本機 PostgreSQL 的帳號、密碼和連接埠修改
 `DATABASE_URL`。使用 `psql` 執行 `psql/createdb.sql` 建立開發資料庫、
-`dev_user` 和 W4 的 `notes` table。接著對既有資料庫執行 W5 關聯結構：
+`dev_user` 和 W4 的 `notes` table。接著執行 W5 的 Notes 關聯結構與學術分類 view：
 
 ```powershell
 psql -h localhost -U postgres -d fastapi_dev -f psql/w05_relations.sql
+psql -h localhost -U postgres -d postgres -f psql/academic.sql
 ```
 
 此 migration 可重複執行；它會建立 `categories`、`tags`、`note_tags`，並為既有 `notes`
-新增可為空的 `category_id`。執行後，重新啟動 FastAPI。
+新增可為空的 `category_id`。`academic.sql` 則會在需要時建立 `fastapi_dev` 資料庫，
+安裝 `class`、`inheritance`、`object`、`co`、`insertclass` function 與 `vd_subclass` view。
+執行後，重新啟動 FastAPI。
 
 確認 Python 可以連線：
 
@@ -154,6 +161,8 @@ python -m app.core.db_test
 | POST | `/api/categories` | 建立分類 |
 | GET | `/api/tags` | 列出標籤與使用筆記數 |
 | POST | `/api/tags` | 建立標籤 |
+| POST | `/api/classes` | 透過 PostgreSQL function 建立或連結子分類 |
+| GET | `/api/subclass/pcid/{parent_id}` | 透過 `vd_subclass` view 查詢子分類 |
 | GET | `/api/note/{id}` | 舊版單筆查詢相容路徑 |
 
 ## W5：關聯式設計
@@ -168,6 +177,7 @@ categories 1 ─────< notes
 - 一篇筆記可以有多個標籤，一個標籤也可以標記多篇筆記。`note_tags` 是關聯表，以 `(note_id, tag_id)` 複合主鍵避免重複關聯。
 - 刪除分類時，所屬筆記保留但 `category_id` 變成 `NULL`；刪除筆記或標籤時，其 `note_tags` 關聯會由 foreign key cascade 清理。
 - 完整教學、migration 與驗收步驟見 [`W05_RELATIONAL_DESIGN.md`](W05_RELATIONAL_DESIGN.md)。
+- PostgreSQL 學術分類 function、view 與 API 練習見 [`W05_POSTGRES_VIEW.md`](W05_POSTGRES_VIEW.md)。
 - 本專案首頁也包含 Web Programming W5 的 DOM 互動範例，見下方「W5 Web：JavaScript DOM」。
 
 ## W5 Web：JavaScript DOM 與事件

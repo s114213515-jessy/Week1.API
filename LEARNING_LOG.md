@@ -17,6 +17,21 @@
 - 我遇到的問題與解決方式：
 - 下一步想練習的資料庫功能：
 
+## W5 PostgreSQL — View 與 Function
+
+### 本週完成
+- 建立 `class`、`inheritance`、`object`、`co` 資料表與外鍵關係。
+- 使用 `insertclass` function 在同一交易中新增分類並更新階層路徑。
+- 建立 `vd_subclass` view，並由 FastAPI 提供查詢與新增分類 API。
+- 對 API 資料庫帳號授予 view 的唯讀權限及 function 執行權限。
+
+### 我自己的心得
+- 我如何用自己的話解釋資料庫 view 與一般資料表的差異：
+- 為什麼把多步驟寫入包在資料庫 function／transaction 中：
+- API 透過 view 讀資料時，最小權限帶來什麼好處：
+- 我遇到的問題與解決方式：
+- 下一步想嘗試的 view/API：
+
 ## W5 Web — JavaScript DOM 與事件處理
 
 ### 本週完成
